@@ -1,18 +1,25 @@
-name: Render Quarto document
+name: Quarto Publish
 
 on:
   push:
-    branches: [ main ]
+    branches: main
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: quarto-dev/quarto-actions/setup@v2
-      - name: Render document
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render Quarto Project
         run: quarto render computations.qmd
-      - uses: actions/upload-artifact@v3
+
+      - name: Upload rendered HTML
+        uses: actions/upload-artifact@v3
         with:
           name: computations-html
           path: computations.html
+
